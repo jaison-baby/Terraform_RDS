@@ -16,8 +16,8 @@ module "vpc" {
   enable_dns_support   = true
 }
 
-resource "aws_db_subnet_group" "education" {
-  name       = "education"
+resource "aws_db_subnet_group" "testdb" {
+  name       = "testdb"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
@@ -48,8 +48,8 @@ resource "aws_security_group" "rds" {
   }
 }
 
-resource "aws_db_parameter_group" "education" {
-  name   = "education"
+resource "aws_db_parameter_group" "testdb" {
+  name   = "testdb"
   family = "postgres13"
 
   parameter {
@@ -58,17 +58,17 @@ resource "aws_db_parameter_group" "education" {
   }
 }
 
-resource "aws_db_instance" "education" {
-  identifier             = "education"
+resource "aws_db_instance" "testdb" {
+  identifier             = "testdb"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "postgres"
   engine_version         = "13.1"
   username               = "edu"
   password               = var.db_password
-  db_subnet_group_name   = aws_db_subnet_group.education.name
+  db_subnet_group_name   = aws_db_subnet_group.testdb.name
   vpc_security_group_ids = [aws_security_group.rds.id]
-  parameter_group_name   = aws_db_parameter_group.education.name
+  parameter_group_name   = aws_db_parameter_group.testdb.name
   publicly_accessible    = true
   skip_final_snapshot    = true
 }
