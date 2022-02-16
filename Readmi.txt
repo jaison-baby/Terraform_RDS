@@ -1,0 +1,31 @@
+1. The first resources defined are the VPC and subnets, using the terraform-aws-vpc module.
+
+2. The next resource is an aws_db_subnet_group, which designates a collection of subnets that your RDS instance can be provisioned in. This subnet group uses the subnets created by the VPC module.
+
+3. This subnet group resource is an optional parameter in your aws_db_instance block below. Without it, Terraform creates your RDS instances in the default VPC.
+
+
+4.Database instance named as the aws_db_instance configuration.
+
+5. 
+        username and password: The credentials for the root user.
+       
+        publicly_accessible: Set to true for this tutorial's configuration. Use the default of false for production systems.
+    
+        skip_final_snapshot: Set to true to disable taking a final backup when you destroy the database
+
+6.Parameter group  the definition for the aws_db_parameter_group.
+
+
+
+7. This configuration enables connection logging for all instances using this parameter group. Note that the family parameter must correspond with the engine version of the RDS instance.
+
+8. The parameter group resource contains all of the database-level settings for your RDS instance, which will be specific to the database engine and version you use.
+
+9. Custom parameter groups are optional, and AWS will create the instance using a default parameter group if you do not supply one. However, you cannot modify the settings of a default parameter group, and changing the associated parameter group for an AWS instance always requires a reboot, so it is best to use a custom one to support modifications over the RDS life cycle.
+
+10 . Input variables
+
+   the aws_db_instance root user password relies on an input variable. Open the variables.tf file to review its configuration.
+
+11. 
